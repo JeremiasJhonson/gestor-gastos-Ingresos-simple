@@ -280,23 +280,63 @@ public class Main {
             opcion=leerOpcion(teclado,1,4);
             switch (opcion){
                 case 1:
-                    double balanceGastos= gestorGeneral.GastosGeneralCantidad();
-                    System.out.println("El balance general es "+balanceGastos+"€");
+                    manejarBalanceGastos(teclado, gestorGeneral);
                     break;
                 case 2:
-                    double ingresos= gestorGeneral.IngresosGeneral();
-                    System.out.println("El total de ingresos es "+ingresos+"€");
+                    manejarBalanceIngresos(teclado, gestorGeneral);
                     break;
                 case 3:
-                    double total=gestorGeneral.IngresosGeneral()- gestorGeneral.GastosGeneralCantidad();
+                    manejarBalanceGeneral(teclado, gestorGeneral);
+                    break;
+                default:
+                    break;
+            }
+        }while(opcion!=4);
+    }
+    public static void manejarBalanceGastos(Scanner teclado, GestorGeneral gestorGeneral){
+        double balanceGastos= gestorGeneral.GastosGeneralCantidad();
+                    TipoGasto tipo=null;
+                    for(int i=0; i<4;i++){
+                        double balanceIndividual=gestorGeneral.GastosTipoCantidad(i);
+                        switch (i) {
+                            case 0:
+                                tipo=TipoGasto.COMIDA;
+                                break;
+                             case 1:
+                                tipo=TipoGasto.OCIO;
+                                break;
+                                case 2:
+                                tipo=TipoGasto.NORA;
+                                break;
+                                case 3:
+                                tipo=TipoGasto.PABLO;
+                                break;
+                            
+                            default:
+                                break;
+                        }
+                        System.out.println(balanceIndividual+"€ de gastos de tipo "+tipo.toString());
+                    
+                    }
+                
+                    double balanceIndividual=gestorGeneral.GastosTipoCantidad(5);
+                    System.out.println(balanceIndividual+"€ de gastos de tipo FACTURA");
+
+                    System.out.println("El balance general es "+balanceGastos+"€");
+    }
+    public static void manejarBalanceIngresos(Scanner teclado, GestorGeneral gestorGeneral){
+         double ingresos= gestorGeneral.IngresosGeneral();
+                    System.out.println("El total de ingresos es "+ingresos+"€");
+    }
+    public static void manejarBalanceGeneral(Scanner teclado, GestorGeneral gestorGeneral){
+        double total=gestorGeneral.IngresosGeneral()- gestorGeneral.GastosGeneralCantidad();
                     if(total>0){
                         System.out.println("El balance total es positivo con un superávit de "+total+"€");
                     }else if(total==0){
                         System.out.println("El balance total es nulo "+total+"€");
-                    }else System.out.println("El balance total es negativo con un déficit de "+total+"€");
-                    break;
-            }
-        }while(opcion!=4);
+                    }else{
+                        System.out.println("El balance total es negativo con un déficit de "+total+"€");
+                    }
     }
     public static void manejarMostrarGastosIngresos(Scanner teclado, GestorGastos gestorGastos, GestorIngresos gestorIngresos){
         int opcion;
@@ -307,8 +347,14 @@ public class Main {
                 case 1:
                     mostrarGastos(teclado,gestorGastos);
                 case 2:
-                    System.out.println("===LISTA DE INGRESOS===\n");
-                    gestorIngresos.mostrarIngresos();
+                    System.out.print("===LISTA DE INGRESOS===\n");
+                    if(gestorIngresos.getIngresos().isEmpty()){
+                        System.out.println("      LISTA VACÍA    \n");
+                    }else{
+                        gestorIngresos.mostrarIngresos();
+                    }
+                    default:
+                    break;
             }
         }while(opcion!=3);
     }
