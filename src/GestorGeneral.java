@@ -42,12 +42,13 @@ public class GestorGeneral {
                 resul+=gasto.getCantidad();
             }
         }else if(opcion==5){
-            iterator=gestorGastos.getGastosTipoFactura(opcion).iterator();
-            while(iterator.hasNext()){
-                gasto=iterator.next();
-                resul+=gasto.getCantidad();
+            for(int i=0; i<4;i++){
+               iterator=gestorGastos.getGastosTipoFactura(i).iterator();
+                while(iterator.hasNext()){
+                    gasto=iterator.next();
+                    resul+=gasto.getCantidad();
+                }  
             }
-
         }
         return resul;
     }
